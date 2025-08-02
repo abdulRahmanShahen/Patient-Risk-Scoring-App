@@ -1,72 +1,111 @@
-# 🩺 Patient Risk Scoring in Salesforce Health Cloud  
-**A Clean-Code, Trigger-Based Approach to Scoring Patient Risk Using Custom Metadata & Apex Frameworks**
+🏥 Patient Risk Scoring Engine – Salesforce
+A real-world simulation of a clinical risk scoring system built entirely in Salesforce using Apex, Triggers, Custom Metadata, and Dynamic Forms. This project demonstrates how you can automate patient risk assessment based on clinical data and best practices.
+
+📌 Project Goal
+To automatically calculate and update each patient’s Risk_Score__c and categorize them as Low, Medium, or High Risk based on:
+
+Their diagnoses
+
+Their medications
+
+This supports healthcare providers in prioritizing care, preventing complications, and identifying high-risk patients early.
+
+🧩 Architecture Overview
+The system is composed of:
+
+Custom Objects:
+Object	Description
+Patient__c	Main entity representing a patient
+Diagnosis__c	Stores patient diagnoses (linked to patient)
+Medication__c	Stores patient medications (linked to patient)
+
+Core Components:
+Component	Purpose
+Apex Triggers	Automatically recalculate score on insert/update
+Trigger Handler Classes	Clean separation of logic per object
+RiskScoringService	Central service to calculate and update risk
+Custom Metadata: Risk_Map__mdt	Stores risk values for diagnoses and medication types
+Validation Rules	Ensures data completeness and accuracy
+Dynamic Forms + Visibility	Highlights High Risk patients visually
+
+🛠️ How It Works
+When a Diagnosis__c or Medication__c is added or updated:
+
+Trigger fires and delegates logic to its handler
+
+Handler calls the shared RiskScoringService
+
+The service:
+
+Pulls all related diagnoses/medications
+
+Matches them with values in Custom Metadata
+
+Calculates total Risk_Score__c
+
+Updates the Risk_Level__c field (Low / Medium / High)
+
+If a patient is High Risk, a red alert banner shows on the record page using Dynamic Forms Visibility Rules.
+
+💡 Why Custom Metadata?
+Flexible and Configurable: No hardcoded logic
+
+Easily Extendable: Add new diagnoses/medications without touching code
+
+Admin-Friendly: Changes can be made from Setup without deployment 
+Test Coverage
++85% test coverage across all classes
+
+Includes edge cases (e.g., patients with no diagnoses, multiple high-risk meds)
+
+🧪 Admin Features
+Validation Rules to prevent incomplete records
+
+Formula Fields to show risk visually
+
+Record Types (if needed for segmentation)
+
+Field-Level Security for controlled visibility
 
 
-## 📌 Project Overview
-
-This project showcases a **modular, scalable, and testable** risk scoring system for **Patients** in Salesforce Health Cloud.  
-It’s designed with Salesforce best practices in mind: **framework thinking**, **custom metadata**, and **separation of concerns** via **Trigger-Handler architecture**.
-
-✅ **Admin-configurable logic** using **Custom Metadata Types**  
-✅ **Multiple triggers** with **dedicated handlers**  
-✅ Built with **Test-Driven Development** mindset  
-✅ Follows **Single Responsibility Principle**
-
----
-
-## 🧠 Problem Statement
-
-Healthcare providers using Salesforce often need to assign **dynamic, rule-based risk scores** to patients — based on diagnoses, medications, or other conditions — without writing code every time the logic changes.
-
----
-
-## 🎯 Solution Architecture
-
-This solution lets **admins control the risk logic** from Setup using **Custom Metadata**, while Apex classes apply the logic during inserts/updates.
+⚙️ Developer Details
+Apex Structure
 
 
-flowchart TD
-  A[Diagnosis__c Trigger] --> B[DiagnosisTriggerHandler]
-  B --> C[RiskScoreService]
-  A2[Medication__c Trigger] --> B2[MedicationTriggerHandler]
-  B2 --> C
+force-app/
+├── main/
+│   └── default/
+│       ├── classes/
+│       │   ├── RiskScoringService.cls
+│       │   ├── DiagnosisTriggerHandler.cls
+│       │   ├── MedicationTriggerHandler.cls
+│       │   └── [Test Classes...]
+│       ├── triggers/
+│       │   ├── UpdateDiagnosisRiskScore.trigger
+│       │   └── UpdateMedicationRiskScore.trigger
+│       └── metadata/
+│           └── Risk_Map__mdt
 
-  C --> D[Custom Metadata Rules: Risk_Criteria__mdt]
-  C --> E[Patient__c: Update Risk_Score__c]
 
 
-  🧪 Testing Coverage
-100% logic coverage
+🧑‍💼 About Me
+I'm a Salesforce Certified Developer & Admin, currently seeking opportunities in:
 
-Tested for:
+HealthTech / Health Informatics Projects
 
-Insert and update of Diagnosis__c
+Salesforce Back-End Development
 
-Insert and update of Medication__c
+Medical CRM Automation
 
-Valid and invalid conditions
+Let’s connect 👉 [https://www.linkedin.com/in/abdul-rahman-shaheen-ab145a24al](https://www.linkedin.com/in/abdul-rahman-shaheen-ab145a24a/)
 
-No-matching metadata rule edge case
 
-🧩 Extensibility
-This system is easily extendable to:
+🟢 Status
+🛠️ Project Complete
+📦 Ready for review
+🚀 Currently open for contributions & collaboration
 
-Add risk rules for Lab Results, Procedures, etc.
 
-Connect with Einstein Analytics dashboards
-
-Generate alerts for High-Risk Patients
-
-🔒 Permissions & Security
-Custom Metadata is read-only in production
-
-Business logic doesn’t require field-level changes
-
-Bulk-safe: trigger handlers use List<Id> patterns
-
-👨‍💻 Author
-Abdalrahman Shaheen
-Certified Salesforce Admin & Developer | Salesforce Engineering
 
 
 
